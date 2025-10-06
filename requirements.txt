@@ -1,0 +1,7 @@
+numpy
+scikit-learn
+websocket-client
+requests
+plyer
+pystray
+pillow

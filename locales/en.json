@@ -1,0 +1,20 @@
+{
+  "title": "BTC/USD Live Price",
+  "connecting": "Connecting to Binance...",
+  "connected": "Connected",
+  "disconnected": "Disconnected. Reconnecting...",
+  "error": "Connection error",
+  "live_updated": "Live • Updated",
+  "alert_message": "⚠️ Sharp change: {pct:.2f}%",
+  "tray_show": "Show",
+  "tray_exit": "Exit",
+  "btn_minimize": "Minimize to Tray",
+  "btn_always_on_top": "Always on Top",
+  "btn_settings": "Settings",
+  "settings_title": "Settings",
+  "alert_threshold": "Alert Threshold (%)",
+  "sound_enabled": "Sound Alert",
+  "notifications_enabled": "System Notifications",
+  "base_currency": "Display Currency",
+  "save": "Save"
+}
