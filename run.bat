@@ -9,7 +9,7 @@ if not exist ".git" (
     echo Repository not found. Skipping update.
     echo Starting application...
     python app.py
-    goto :eof
+    exit /b
 )
 
 echo Checking for updates...
@@ -35,4 +35,4 @@ echo.
 echo Starting Crypto Price Tracker...
 python app.py
 
-pause
+exit /b
