@@ -51,7 +51,7 @@ if %errorlevel% equ 0 (
 echo.
 
 REM Launch the application
-echo [3/3] Launching Nexora...
+echo [3/3] Launching Crypto Price Tracker...
 python app.py
 if %errorlevel% neq 0 (
     echo Error launching the application.
