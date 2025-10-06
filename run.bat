@@ -1,38 +1,61 @@
 @echo off
 setlocal
 
-:: Path to the current directory
-set "SCRIPT_DIR=%~dp0"
+echo ========================================
+echo  Crypto Price Tracker Auto-update and Launch
+echo ========================================
+echo.
 
-:: Check if the folder is a Git repository
-if not exist ".git" (
-    echo Repository not found. Skipping update.
-    echo Starting application...
-    python app.py
-    exit /b
-)
-
-echo Checking for updates...
-
-:: Fetch latest changes from remote
-git fetch origin
-
-:: Compare local HEAD with remote master branch
-git diff --quiet HEAD origin/master
-if errorlevel 1 (
-    echo Updates detected. Pulling latest changes...
-    git pull origin master
-    if errorlevel 1 (
-        echo Failed to update. Starting application anyway.
+REM Check for Git
+git --version >nul 2>&1
+if %errorlevel% equ 0 (
+    echo [1/3] Git detected. Checking repository...
+    if exist ".git" (
+        echo [1/3] Updating project from GitHub...
+        git pull origin main 2>nul || git pull origin master 2>nul
+        if %errorlevel% equ 0 (
+            echo [1/3] Project successfully updated.
+        ) else (
+            echo [1/3] Failed to update project. Possible causes: no internet connection or local file changes.
+        )
     ) else (
-        echo Update completed successfully.
+        echo [1/3] This folder is not a Git repository. Skipping update.
     )
 ) else (
-    echo No updates available.
+    echo [1/3] Git is not installed. Skipping update.
+    echo      Please install Git: https://git-scm.com/
 )
 
 echo.
-echo Starting Crypto Price Tracker...
-python app.py
 
-exit /b
+REM Check for Python
+python --version >nul 2>&1
+if %errorlevel% neq 0 (
+    echo Error: Python not found!
+    echo Please install Python 3.7 or newer: https://www.python.org/downloads/
+    pause
+    exit /b 1
+)
+
+REM Install dependencies
+echo [2/3] Installing dependencies from requirements.txt...
+pip install --upgrade -r requirements.txt >nul
+if %errorlevel% equ 0 (
+    echo [2/3] Dependencies are up to date.
+) else (
+    echo [2/3] Error installing dependencies.
+    pause
+    exit /b 1
+)
+
+echo.
+
+REM Launch the application
+echo [3/3] Launching Nexora...
+python app.py
+if %errorlevel% neq 0 (
+    echo Error launching the application.
+    pause
+)
+
+endlocal
