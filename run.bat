@@ -32,7 +32,7 @@ if errorlevel 1 (
 )
 
 echo.
-echo Starting Servatio...
+echo Starting Crypto Price Tracker...
 python app.py
 
 pause
