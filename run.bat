@@ -39,7 +39,7 @@ if %errorlevel% neq 0 (
 
 REM Launch the application
 echo [2/2] Launching Crypto Price Tracker...
-python app.py
+python main.py
 if %errorlevel% neq 0 (
     echo Error launching the application.
     pause

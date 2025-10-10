@@ -7,7 +7,6 @@ __pycache__/
 .vscode/
 .venv
 .idea
-.idea/
 *.swp
 *.swo
 
@@ -19,7 +18,8 @@ __pycache__/
 .DS_Store
 Thumbs.db
 settings.ini
-
+config.json
+crypto_app.log
 # Executables (if you build .exe later)
 dist/
 build/
