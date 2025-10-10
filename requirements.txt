@@ -1,4 +1,3 @@
-tkinter
 websocket-client==1.6.3
 requests==2.31.0
 pystray==0.19.4
