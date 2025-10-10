@@ -4,7 +4,7 @@ pystray==0.19.4
 Pillow==10.0.1
 plyer==2.1.0
 matplotlib==3.7.2
-mplfinance==0.12.10a0
+mplfinance
 pandas==2.0.3
 tenacity==8.2.3
 pydantic==2.4.2
