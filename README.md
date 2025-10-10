@@ -32,6 +32,11 @@
 
 ### Установка зависимостей
 
+git clone https://github.com/Hashmaster82/btc_live_price.git
+
+install_requirements.bat
+
+
 ```bash
 # Базовые зависимости
 pip install websocket-client requests numpy scikit-learn pandas
