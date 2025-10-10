@@ -117,60 +117,41 @@ class BinancePriceProvider(PriceProvider):
                 time.sleep(retry_delay)
                 retry_delay = min(retry_delay * 1.5, 60)
 
+        import feedparser
+        from typing import List
+        import html
 
 class NewsService:
-    """Сервис новостей."""
+            """Служба получения новостей через RSS (без API-ключа)."""
 
-    def __init__(self, api_key: str):
-        self.api_key = api_key
-        self.last_update = 0
-        self.cache: List[str] = []
+            def __init__(self, api_key: str = None):
+                # CoinDesk RSS — один из самых надёжных источников по крипте
+                self.rss_url = "https://www.coindesk.com/arc/outboundfeeds/rss/"
 
-    @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
-    def fetch_news(self, query: str = "cryptocurrency", language: str = "en") -> List[str]:
-        """Получает новости из API."""
-        if not self.api_key or self.api_key == "YOUR_NEWS_API_KEY":
-            return self._get_sample_news()
+            def fetch_news(self, language: str = "en") -> List[str]:
+                """
+                Получает последние заголовки из RSS.
+                Поддержка языка ограничена — CoinDesk в основном на английском.
+                """
+                if language != "en":
+                    # Можно добавить другие источники для ru, но пока оставим так
+                    return ["Новости на русском пока недоступны"]
 
-        try:
-            params = {
-                'q': query,
-                'language': language,
-                'sortBy': 'publishedAt',
-                'apiKey': self.api_key,
-                'pageSize': 5
-            }
+                try:
+                    feed = feedparser.parse(self.rss_url)
+                    if feed.bozo and not feed.entries:
+                        raise ValueError("Некорректный RSS-канал")
 
-            response = requests.get("https://newsapi.org/v2/everything", params=params, timeout=10)
-            response.raise_for_status()
-
-            data = response.json()
-            articles = data.get('articles', [])
-            news_list = []
-
-            for article in articles[:5]:
-                title = article.get('title', '')
-                if title and title != '[Removed]':
-                    if len(title) > 80:
-                        title = title[:77] + "..."
-                    news_list.append(title)
-
-            return news_list if news_list else self._get_sample_news()
-
-        except Exception as e:
-            logging.error(f"News fetch error: {e}")
-            return self._get_sample_news()
-
-    def _get_sample_news(self) -> List[str]:
-        """Возвращает заглушки новостей."""
-        return [
-            "Bitcoin преодолел отметку $70,000 впервые за месяц",
-            "Ethereum готовится к обновлению Dencun",
-            "Binance запустила новые пары для SOL",
-            "Регуляторы США одобрили первый ETF на Ethereum",
-            "Крупный хакер атаковал DeFi-протокол — ущерб $50M"
-        ]
-
+                    headlines = []
+                    for entry in feed.entries[:3]:  # Берём 3 свежие новости
+                        # Очистка от HTML-сущностей (например, &amp; → &)
+                        title = html.unescape(entry.title)
+                        headlines.append(title.strip())
+                    return headlines
+                except Exception as e:
+                    # Логирование ошибки (в реальном приложении — через ErrorHandler)
+                    print(f"[NewsService] Ошибка загрузки RSS: {e}")
+                    return ["Не удалось загрузить новости"]
 
 class NotificationService:
     """Сервис уведомлений."""

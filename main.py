@@ -50,7 +50,7 @@ class CryptoPriceApp(Observable):
         self.translations = Internationalization()
         self.converter = CurrencyConverter()
         self.notification_service = NotificationService()
-        self.news_service = NewsService("YOUR_NEWS_API_KEY")
+        self.news_service = NewsService()
         self.price_provider = BinancePriceProvider()
 
         # Инициализация монитора цен ДО создания UI
